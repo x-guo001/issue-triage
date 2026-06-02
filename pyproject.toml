@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "issue-triage"
+version = "0.1.0"
+description = "Fetch open GitHub issues and triage them with an LLM."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "requests>=2.31",
+    "python-dotenv>=1.0",
+    "rich>=13.7",
+    "anthropic>=0.39",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.6",
+    "pytest>=8.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.ruff]
+line-length = 80
+target-version = "py310"
+
+[tool.ruff.lint]
+# Lean toward the Google Python Style Guide: pycodestyle, pyflakes,
+# import sorting, docstrings, and naming.
+select = ["E", "F", "W", "I", "D", "N", "UP"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
