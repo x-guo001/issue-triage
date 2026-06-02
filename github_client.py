@@ -30,6 +30,26 @@ _BODY_TRUNCATE_LENGTH = 500
 _REQUEST_TIMEOUT = 15
 
 
+def default_max_issues() -> int:
+    """Return the default issue cap from the environment, or 50.
+
+    Reads the ``MAX_ISSUES`` environment variable (populated from ``.env``).
+    A missing, non-integer, or non-positive value falls back to
+    :data:`DEFAULT_MAX_ISSUES`.
+
+    Returns:
+        The resolved default maximum number of issues to fetch.
+    """
+    raw = os.environ.get("MAX_ISSUES")
+    if raw is None:
+        return DEFAULT_MAX_ISSUES
+    try:
+        value = int(raw)
+    except ValueError:
+        return DEFAULT_MAX_ISSUES
+    return value if value > 0 else DEFAULT_MAX_ISSUES
+
+
 class GitHubError(Exception):
     """Raised when the GitHub API cannot be reached or returns an error.
 

@@ -20,7 +20,7 @@ from rich.table import Table
 from rich.text import Text
 
 from analyzer import AnalysisResult, AnalyzerError, analyze
-from github_client import DEFAULT_MAX_ISSUES, GitHubError, fetch_issues
+from github_client import GitHubError, default_max_issues, fetch_issues
 from triage import EnrichedIssue, triage
 
 _PYPROJECT = pathlib.Path(__file__).resolve().parent / "pyproject.toml"
@@ -70,12 +70,16 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         metavar="OWNER/NAME",
         help="Public repository to triage, e.g. 'pallets/flask'.",
     )
+    default_max = default_max_issues()
     parser.add_argument(
         "--max-issues",
         type=int,
-        default=DEFAULT_MAX_ISSUES,
+        default=default_max,
         metavar="N",
-        help=f"Maximum issues to fetch (default: {DEFAULT_MAX_ISSUES}).",
+        help=(
+            f"Maximum issues to fetch (default: {default_max}, set via "
+            "MAX_ISSUES in .env)."
+        ),
     )
     parser.add_argument(
         "--version",
